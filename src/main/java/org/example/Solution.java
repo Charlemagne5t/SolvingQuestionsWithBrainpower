@@ -2,15 +2,19 @@ package org.example;
 
 public class Solution {
     public long mostPoints(int[][] questions) {
-        long[] dp = new long[questions.length + 1];
-        dp[dp.length - 1] = questions[dp.length - 2][0];
-        for (int i = dp.length - 2; i > 0; i--) {
-            if (i + 1 + questions[i - 1][1] < dp.length) {
-                dp[i] = Math.max(dp[i + 1], questions[i - 1][0] + dp[i + 1 + questions[i - 1][1]]);
-            } else dp[i] = Math.max(dp[i + 1], questions[i - 1][0]);
+        long[] dp = new long[questions.length];
+        long res = 0L;
+        int n = questions.length;
+        for(int i = n - 1; i >= 0; i--){
+            int val = questions[i][0];
+            int skip = questions[i][1] + 1;
+            if(i + skip < n){
+                dp[i] = Math.max(val + dp[i + skip], dp[i + 1]);
+            }else dp[i] = i ==  n - 1 ? val : Math.max(dp[i + 1], val);
+            res = Math.max(res, dp[i]);
         }
 
-        return dp[1];
+        return res;
     }
 }
 
